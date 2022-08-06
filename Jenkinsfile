@@ -1,23 +1,20 @@
 pipeline {
-  agent any
-  stages {
-    stage('DEV') {
-      steps {
-        echo 'intiated'
-      }
-    }
+    agent any
 
-    stage('UAT') {
-      steps {
-        echo 'OK'
-      }
-    }
+    stages {
+        stage('test') {
+            steps {
 
-    stage('PROD') {
-      steps {
-        echo 'OK'
-      }
-    }
+                echo 'Building anotherJob and getting the log'
 
-  }
+                script {
+                    def bRun = build 'anotherJob' 
+                    echo 'last 100 lines of BuildB'
+                    for(String line : bRun.getRawBuild().getLog(100)){
+                        echo line
+                    }
+                }
+            }
+        }
+    }
 }
